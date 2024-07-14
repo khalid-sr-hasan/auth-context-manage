@@ -5,6 +5,7 @@ import { AuthContext } from "../../provider/AuthProvider";
 const Login = () => {
     const { loginUser, setUser } = useContext(AuthContext);
     const handleLogin = (event) => {
+        event.preventDefault();
         const form = event.target;
         const email = form.email.value;
         const password = form.password.value;
@@ -36,6 +37,7 @@ const Login = () => {
                                 </label>
                                 <input
                                     type="email"
+                                    name="email"
                                     placeholder="email"
                                     className="input input-bordered"
                                     required
@@ -48,6 +50,7 @@ const Login = () => {
                                 </label>
                                 <input
                                     type="password"
+                                    name="password"
                                     placeholder="password"
                                     className="input input-bordered"
                                     required
