@@ -4,7 +4,6 @@ import { AuthContext } from "../../provider/AuthProvider";
 
 const NavBar = () => {
     const { user, logOut } = useContext(AuthContext);
-    console.log(user);
 
     const handleLogout = () => {
         logOut()
@@ -70,6 +69,9 @@ const NavBar = () => {
                             <Link to="/">Home</Link>
                         </li>
                         <li>
+                            <Link to="/order">Order</Link>
+                        </li>
+                        <li>
                             <Link to="/login">Login</Link>
                         </li>
                         <li>
@@ -80,7 +82,7 @@ const NavBar = () => {
                 <div className="navbar-end">
                     {user ? (
                         <div className="flex gap-3 items-center">
-                            <small>{user.email}</small>
+                            <small>{user?.displayName}</small>
                             <button onClick={handleLogout}>Log Out</button>
                         </div>
                     ) : (

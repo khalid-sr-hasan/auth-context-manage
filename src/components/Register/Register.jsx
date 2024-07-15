@@ -3,9 +3,12 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
 
 const Register = () => {
-    const { registerUser, setUser } = useContext(AuthContext);
+    const { registerUser, setUser, userProfileUpdate } =
+        useContext(AuthContext);
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [nameError, setNameError] = useState("");
+
     // console.log(registerUser);
 
     const handleRegister = (event) => {
@@ -15,25 +18,41 @@ const Register = () => {
         const email = form.email.value;
         const password = form.password.value;
 
-        if (!/^\S+@\S+\.\S+$/.test(email)) {
+        if (name === "") {
+            setNameError("Name require*");
+        }
+        if (email === "") {
+            setEmailError("Email require*");
+        } else if (!/^\S+@\S+\.\S+$/.test(email)) {
             setEmailError("Invalid Email");
             return;
         }
-        setEmailError("");
-        if (password.length < 6) {
+
+        if (password === "") {
+            setPasswordError("Password require*");
+        } else if (password.length < 6) {
             setPasswordError("password mast be 6 character");
             return;
+        } else {
+            setNameError("");
+            setEmailError("");
+            setPasswordError("");
         }
-
-        setPasswordError("");
 
         registerUser(email, password)
             .then((result) => {
                 setUser(result.user);
+                logUser(result.user, name);
             })
             .catch((error) => {
                 console.log(error);
             });
+
+        const logUser = (newUser, name) => {
+            userProfileUpdate(newUser, name)
+                .then(() => {})
+                .catch((error) => console.error(error));
+        };
     };
     return (
         <div>
@@ -58,6 +77,13 @@ const Register = () => {
                                     className="input input-bordered"
                                 />
                             </div>
+                            {nameError && (
+                                <p>
+                                    <small className="text-red-500">
+                                        {nameError}
+                                    </small>
+                                </p>
+                            )}
                             <div className="form-control">
                                 <label className="label">
                                     <span className="label-text">Email</span>
